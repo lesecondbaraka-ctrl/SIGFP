@@ -1,0 +1,58 @@
+# Configuration Netlify pour SIGFP 5
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Commande de build
+  command = "npm run build"
+  
+  # Dossier de sortie (dist pour Vite)
+  publish = "dist"
+  
+  # Variables d'environnement pour le build
+  [build.environment]
+    NODE_VERSION = "18"
+    NPM_FLAGS = "--legacy-peer-deps"
+
+# Redirections pour SPA (Single Page Application)
+# Toutes les routes non trouvées redirigent vers index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de sécurité
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Sécurité
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Cache pour les assets
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    # Pas de cache pour index.html
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Optimisations
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
