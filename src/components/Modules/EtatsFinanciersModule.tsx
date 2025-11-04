@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Target, AlertTriangle, CheckCircle, PieChart, BarChart3, Activity, Link2, FileCheck } from 'lucide-react';
+import { TrendingUp, TrendingDown, Target, AlertTriangle, CheckCircle, PieChart, BarChart3, Activity, Link2, FileCheck } from 'lucide-react';
 import { IntegrationFinanciereService } from '../../services/IntegrationFinanciereService';
 import { useExercicesComptables } from '../../hooks/useExercicesComptables';
 import { useBilanActif } from '../../hooks/useBilanActif';
@@ -12,6 +12,7 @@ import { RatioFinancier } from '../../types/finance';
 import { useReactToPrint } from 'react-to-print';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import './EtatsFinanciersModule.css';
 
 const tabs = ['Dashboard Consolidé', 'Intégration', 'Bilan', 'Compte de Résultat', 'Flux de Trésorerie', 'Indicateurs', 'Analyse Financière'];
 
@@ -80,7 +81,10 @@ const DashboardConsolide = () => {
             <p className="text-xs font-semibold text-blue-800 mb-1">Engagements</p>
             <p className="text-2xl font-bold text-blue-700">{kpisConsolides.budget.totalEngagement.toLocaleString()} CDF</p>
             <div className="mt-2 w-full bg-blue-200 rounded-full h-2">
-              <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${kpisConsolides.budget.tauxEngagement}%` }}></div>
+              <div
+                className="bg-blue-600 h-2 rounded-full progress-bar"
+                data-width={Math.max(0, Math.min(100, kpisConsolides.budget.tauxEngagement))}
+              ></div>
             </div>
             <p className="text-xs text-blue-600 mt-1">{kpisConsolides.budget.tauxEngagement}% du budget</p>
           </div>
@@ -88,7 +92,10 @@ const DashboardConsolide = () => {
             <p className="text-xs font-semibold text-purple-800 mb-1">Réalisations</p>
             <p className="text-2xl font-bold text-purple-700">{kpisConsolides.budget.totalRealisation.toLocaleString()} CDF</p>
             <div className="mt-2 w-full bg-purple-200 rounded-full h-2">
-              <div className="bg-purple-600 h-2 rounded-full" style={{ width: `${kpisConsolides.budget.tauxRealisation}%` }}></div>
+              <div
+                className="bg-purple-600 h-2 rounded-full progress-bar"
+                data-width={Math.max(0, Math.min(100, kpisConsolides.budget.tauxRealisation))}
+              ></div>
             </div>
             <p className="text-xs text-purple-600 mt-1">{kpisConsolides.budget.tauxRealisation}% exécuté</p>
           </div>
@@ -232,7 +239,10 @@ const DashboardConsolide = () => {
                 <span className="font-semibold">{kpisConsolides.budget.tauxEngagement}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${kpisConsolides.budget.tauxEngagement}%` }}></div>
+                <div
+                  className="bg-blue-600 h-2 rounded-full progress-bar"
+                  data-width={Math.max(0, Math.min(100, kpisConsolides.budget.tauxEngagement))}
+                ></div>
               </div>
             </div>
             <div>
@@ -241,7 +251,10 @@ const DashboardConsolide = () => {
                 <span className="font-semibold">{kpisConsolides.budget.tauxRealisation}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-green-600 h-2 rounded-full" style={{ width: `${kpisConsolides.budget.tauxRealisation}%` }}></div>
+                <div
+                  className="bg-green-600 h-2 rounded-full progress-bar"
+                  data-width={Math.max(0, Math.min(100, kpisConsolides.budget.tauxRealisation))}
+                ></div>
               </div>
             </div>
             <div>
@@ -250,7 +263,10 @@ const DashboardConsolide = () => {
                 <span className="font-semibold">{kpisConsolides.recettes.tauxRealisation.toFixed(1)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-purple-600 h-2 rounded-full" style={{ width: `${kpisConsolides.recettes.tauxRealisation}%` }}></div>
+                <div
+                  className="bg-purple-600 h-2 rounded-full progress-bar"
+                  data-width={Math.max(0, Math.min(100, kpisConsolides.recettes.tauxRealisation))}
+                ></div>
               </div>
             </div>
           </div>

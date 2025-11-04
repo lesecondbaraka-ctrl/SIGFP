@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Download, AlertCircle, CheckCircle2, XCircle, TrendingUp, List, GitCompare, Link2, BarChart3, Plus, Calendar, DollarSign } from 'lucide-react';
+import { Download, AlertCircle, CheckCircle2, XCircle, TrendingUp, List, GitCompare, Link2, BarChart3, Plus, Calendar } from 'lucide-react';
 import { useFluxTresorerie } from '../../hooks/useFluxTresorerie';
 import { useDevise } from '../../hooks/useDevise';
 import { useExercicesComptables } from '../../hooks/useExercicesComptables';
@@ -62,15 +62,6 @@ export default function TresorerieModule(): React.ReactElement {
   const [showNewFluxModal, setShowNewFluxModal] = useState(false);
   const [showNewPrevisionModal, setShowNewPrevisionModal] = useState(false);
   const [showRapprochementModal, setShowRapprochementModal] = useState(false);
-  
-  const [newFlux, setNewFlux] = useState({
-    type: 'Encaissement' as 'Encaissement' | 'Décaissement',
-    categorie: 'Exploitation' as 'Exploitation' | 'Investissement' | 'Financement',
-    montant: 0,
-    date: new Date().toISOString().split('T')[0],
-    reference: '',
-    description: ''
-  });
   
   const [newPrevision, setNewPrevision] = useState({
     mois: '',
@@ -454,6 +445,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button 
             onClick={() => setActiveTab('overview')} 
             role="tab"
+            id="tab-overview"
             {...(activeTab === 'overview' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-overview"
             className={`px-4 py-3 rounded-lg flex items-center space-x-2 transition-all font-medium whitespace-nowrap ${
@@ -468,6 +460,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button 
             onClick={() => setActiveTab('synthesis')} 
             role="tab"
+            id="tab-synthesis"
             {...(activeTab === 'synthesis' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-synthesis"
             className={`px-4 py-3 rounded-lg transition-all font-medium whitespace-nowrap ${
@@ -481,6 +474,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button
             onClick={() => setActiveTab('forecasts')} 
             role="tab"
+            id="tab-forecasts"
             {...(activeTab === 'forecasts' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-forecasts"
             className={`px-4 py-3 rounded-lg transition-all font-medium whitespace-nowrap ${
@@ -494,6 +488,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button 
             onClick={() => setActiveTab('flux')} 
             role="tab"
+            id="tab-flux"
             {...(activeTab === 'flux' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-flux"
             className={`px-4 py-3 rounded-lg flex items-center space-x-2 transition-all font-medium whitespace-nowrap ${
@@ -508,6 +503,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button 
             onClick={() => setActiveTab('fx')} 
             role="tab"
+            id="tab-fx"
             {...(activeTab === 'fx' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-fx"
             className={`px-4 py-3 rounded-lg transition-all font-medium whitespace-nowrap ${
@@ -521,6 +517,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button 
             onClick={() => setActiveTab('rapprochement')} 
             role="tab"
+            id="tab-rapprochement"
             {...(activeTab === 'rapprochement' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-rapprochement"
             className={`px-4 py-3 rounded-lg flex items-center space-x-2 transition-all font-medium whitespace-nowrap ${
@@ -535,6 +532,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button 
             onClick={() => setActiveTab('integration')} 
             role="tab"
+            id="tab-integration"
             {...(activeTab === 'integration' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-integration"
             className={`px-4 py-3 rounded-lg flex items-center space-x-2 transition-all font-medium whitespace-nowrap ${
@@ -549,6 +547,7 @@ export default function TresorerieModule(): React.ReactElement {
           <button 
             onClick={() => setActiveTab('graphiques')} 
             role="tab"
+            id="tab-graphiques"
             {...(activeTab === 'graphiques' ? { 'aria-selected': 'true' as const } : { 'aria-selected': 'false' as const })}
             aria-controls="panel-graphiques"
             className={`px-4 py-3 rounded-lg flex items-center space-x-2 transition-all font-medium whitespace-nowrap ${
@@ -674,7 +673,7 @@ export default function TresorerieModule(): React.ReactElement {
       )}
 
       {activeTab === 'synthesis' && (
-        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+        <div id="panel-synthesis" role="tabpanel" aria-labelledby="tab-synthesis" className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Tableau de Synthèse Annuel</h3>
           <p className="text-sm text-gray-600 mb-4">Vue consolidée des flux de trésorerie pour l'exercice {selectedFiscalYear}</p>
           <div className="overflow-x-auto">
@@ -730,7 +729,7 @@ export default function TresorerieModule(): React.ReactElement {
       )}
 
       {activeTab === 'forecasts' && (
-        <div className="space-y-4">
+        <div id="panel-forecasts" role="tabpanel" aria-labelledby="tab-forecasts" className="space-y-4">
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
@@ -1317,12 +1316,13 @@ export default function TresorerieModule(): React.ReactElement {
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Mois *</label>
+                <label htmlFor="forecast-month" className="block text-sm font-medium text-gray-700 mb-2">Mois *</label>
                 <select
                   value={newPrevision.mois}
                   onChange={(e) => setNewPrevision({...newPrevision, mois: e.target.value})}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                   aria-label="Mois de prévision"
+                  id="forecast-month"
                 >
                   <option value="">Sélectionner...</option>
                   {['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'].map((m, i) => (
@@ -1335,21 +1335,23 @@ export default function TresorerieModule(): React.ReactElement {
                   <h4 className="text-sm font-bold text-green-900 mb-3">Recettes Prévues</h4>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">CDF *</label>
+                      <label htmlFor="forecast-recettes-cdf" className="block text-xs font-medium text-gray-700 mb-1">CDF *</label>
                       <input
                         type="number"
                         value={newPrevision.recettesCDF}
                         onChange={(e) => setNewPrevision({...newPrevision, recettesCDF: parseFloat(e.target.value)})}
                         className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                        id="forecast-recettes-cdf"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">USD *</label>
+                      <label htmlFor="forecast-recettes-usd" className="block text-xs font-medium text-gray-700 mb-1">USD *</label>
                       <input
                         type="number"
                         value={newPrevision.recettesUSD}
                         onChange={(e) => setNewPrevision({...newPrevision, recettesUSD: parseFloat(e.target.value)})}
                         className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                        id="forecast-recettes-usd"
                       />
                     </div>
                   </div>
@@ -1358,33 +1360,36 @@ export default function TresorerieModule(): React.ReactElement {
                   <h4 className="text-sm font-bold text-red-900 mb-3">Dépenses Prévues</h4>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">CDF *</label>
+                      <label htmlFor="forecast-depenses-cdf" className="block text-xs font-medium text-gray-700 mb-1">CDF *</label>
                       <input
                         type="number"
                         value={newPrevision.depensesCDF}
                         onChange={(e) => setNewPrevision({...newPrevision, depensesCDF: parseFloat(e.target.value)})}
                         className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+                        id="forecast-depenses-cdf"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">USD *</label>
+                      <label htmlFor="forecast-depenses-usd" className="block text-xs font-medium text-gray-700 mb-1">USD *</label>
                       <input
                         type="number"
                         value={newPrevision.depensesUSD}
                         onChange={(e) => setNewPrevision({...newPrevision, depensesUSD: parseFloat(e.target.value)})}
                         className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+                        id="forecast-depenses-usd"
                       />
                     </div>
                   </div>
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Taux de Change USD/CDF</label>
+                <label htmlFor="forecast-taux-change" className="block text-sm font-medium text-gray-700 mb-2">Taux de Change USD/CDF</label>
                 <input
                   type="number"
                   value={newPrevision.tauxChange}
                   onChange={(e) => setNewPrevision({...newPrevision, tauxChange: parseFloat(e.target.value)})}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                  id="forecast-taux-change"
                 />
               </div>
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
@@ -1439,8 +1444,9 @@ export default function TresorerieModule(): React.ReactElement {
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Compte Bancaire *</label>
+                <label htmlFor="rb-compte" className="block text-sm font-medium text-gray-700 mb-2">Compte Bancaire *</label>
                 <select
+                  id="rb-compte"
                   value={newRapprochement.compteBancaire}
                   onChange={(e) => setNewRapprochement({...newRapprochement, compteBancaire: e.target.value})}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
@@ -1454,8 +1460,9 @@ export default function TresorerieModule(): React.ReactElement {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Solde Relevé Bancaire (FCFA) *</label>
+                  <label htmlFor="rb-solde-releve" className="block text-sm font-medium text-gray-700 mb-2">Solde Relevé Bancaire (FCFA) *</label>
                   <input
+                    id="rb-solde-releve"
                     type="number"
                     value={newRapprochement.soldeReleve}
                     onChange={(e) => setNewRapprochement({...newRapprochement, soldeReleve: parseFloat(e.target.value)})}
@@ -1463,8 +1470,9 @@ export default function TresorerieModule(): React.ReactElement {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Solde Comptable (FCFA) *</label>
+                  <label htmlFor="rb-solde-comptable" className="block text-sm font-medium text-gray-700 mb-2">Solde Comptable (FCFA) *</label>
                   <input
+                    id="rb-solde-comptable"
                     type="number"
                     value={newRapprochement.soldeComptable}
                     onChange={(e) => {
@@ -1477,8 +1485,9 @@ export default function TresorerieModule(): React.ReactElement {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Date du Relevé *</label>
+                <label htmlFor="rb-date-releve" className="block text-sm font-medium text-gray-700 mb-2">Date du Relevé *</label>
                 <input
+                  id="rb-date-releve"
                   type="date"
                   value={newRapprochement.dateReleve}
                   onChange={(e) => setNewRapprochement({...newRapprochement, dateReleve: e.target.value})}
