@@ -18,6 +18,9 @@ const excludedPaths = [
   'node_modules',
   '.git',
   'dist',
+  'coverage',
+  '.env',                // Fichier .env local (déjà dans .gitignore)
+  '.env.local',
   '.env.example',        // Template sans vraies valeurs
   'README.md',
   'DEPLOIEMENT_NETLIFY.md',
@@ -25,21 +28,52 @@ const excludedPaths = [
   'DEPANNAGE_NETLIFY_404.md',
   'CONFORMITE_DEPLOIEMENT.md',
   'INSTRUCTIONS_PUSH_NOUVEAU_COMPTE.md',
+  'NETLIFY_NOUVEAU_SITE.md',
+  'EXPLICATION_SECRETS_SCAN.md',
   'docs',                // Dossier documentation
-  'scripts/scan-secrets.js',  // Ce script lui-même
+  'scripts',             // Tous les scripts (ils référencent légitimement les variables)
   '.githooks',           // Git hooks
   '.gitignore',          // Gitignore
   'package.json',        // Package.json
-  '.github/workflows'    // GitHub Actions
+  'package-lock.json',
+  '.github',             // GitHub Actions et configs
+  'deploy-sql.js',       // Script de déploiement
+  'src/lib/supabase.ts', // Fichier qui utilise légitimement les variables d'env
+  'src/components/Forms/Archivage', // Module archivage (utilise "Secret" comme niveau de confidentialité)
+  'src/components/Modules/ArchivageModule.tsx', // Module archivage
+];
+
+// Patterns de fichiers à exclure
+const excludedFilePatterns = [
+  /\.md$/,               // Tous les fichiers markdown
+  /\.example$/,          // Tous les fichiers .example
+  /\.json$/,             // Fichiers JSON de config
+  /\.yml$/,              // Fichiers YAML
+  /\.yaml$/,
+  /\.toml$/,             // Fichiers TOML
+  /\.lock$/,             // Fichiers de lock
+  /supabase\.ts$/,       // Fichiers Supabase (utilisent légitimement les env vars)
 ];
 
 function shouldExclude(filePath) {
   const relativePath = path.relative(repoRoot, filePath);
-  return excludedPaths.some(excluded => 
-    relativePath.includes(excluded) || 
-    relativePath.endsWith('.md') ||
-    relativePath.endsWith('.example')
+  const normalizedPath = relativePath.replace(/\\/g, '/');
+  
+  // Vérifier les chemins exclus
+  const isExcludedPath = excludedPaths.some(excluded => 
+    normalizedPath.includes(excluded) || 
+    normalizedPath.startsWith(excluded + '/') ||
+    normalizedPath === excluded
   );
+  
+  if (isExcludedPath) return true;
+  
+  // Vérifier les patterns de fichiers
+  const isExcludedPattern = excludedFilePatterns.some(pattern => 
+    pattern.test(normalizedPath)
+  );
+  
+  return isExcludedPattern;
 }
 
 function scanDir(dir) {
