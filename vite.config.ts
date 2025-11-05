@@ -20,7 +20,9 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
     rollupOptions: {
-      external: ['react-to-print'],
+      external: ['react-to-print', 'neon'],
     },
+    // Augmenter la limite de taille des chunks
+    chunkSizeWarningLimit: 1000,
   },
 });
