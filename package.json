@@ -6,15 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --ext .ts,.tsx,.js,.jsx --parser @typescript-eslint/parser --ignore-pattern '**/dist/**'",
+    "build:prod": "tsc && vite build --mode production",
     "preview": "vite preview",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --ext .ts,.tsx,.js,.jsx --parser @typescript-eslint/parser --ignore-pattern '**/dist/**'",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
-    "autopush": "node ./scripts/auto-push.js",
-    "scan-secrets": "node ./scripts/scan-secrets.js",
-    "setup-hooks": "node ./scripts/setup-hooks.js"
+    "postinstall": "npm run build",
+    "analyze": "source-map-explorer 'dist/assets/*.js'"
   },
   "dependencies": {
     "@supabase/auth-ui-react": "^0.4.7",
@@ -48,9 +48,11 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "jsdom": "^23.0.1",
     "postcss": "^8.4.31",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.0.2",
     "vite": "^4.5.1",
+    "vite-plugin-pwa": "^1.1.0",
     "vitest": "^1.0.4"
   }
 }
